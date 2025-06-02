@@ -45,3 +45,4 @@ ax.set_xlabel("연도")
 ax.set_ylabel("사망자 수")
 
 st.pyplot(fig)
+import koreanize_matplotlib
