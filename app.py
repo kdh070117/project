@@ -2,7 +2,12 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import koreanize_matplotlib  # ✅ 이 줄이 핵심!
+import matplotlib.font_manager as fm
+
+# ✅ 한글 폰트 수동 설정 (Streamlit Cloud 포함)
+font_path = "/usr/share/fonts/truetype/nanum/NanumGothic.ttf"
+font_name = fm.FontProperties(fname=font_path).get_name()
+plt.rc('font', family=font_name)
 
 @st.cache_data
 def load_data():
@@ -12,9 +17,8 @@ df = load_data()
 
 st.title("📈 산업별·성별 사망자 수 라인 그래프")
 
-# long format으로 변환
-df_long = df.melt(id_vars=['산업중분류별(1)', '성별(1)'], 
-                  var_name='연도', 
+df_long = df.melt(id_vars=['산업중분류별(1)', '성별(1)'],
+                  var_name='연도',
                   value_name='사망자수')
 df_long['연도'] = df_long['연도'].astype(int)
 
