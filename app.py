@@ -15,7 +15,7 @@ st.title("📊 사망재해 현황 및 분석 대시보드")
 # 데이터 로딩
 @st.cache_data
 def load_data():
-    df = pd.read_csv("사망재해_현황_및_분석성별_20250602121409.csv", encoding='utf-8')
+    df = pd.read_csv("사망재해_현황_및_분석성별_20250602121409.csv", encoding='cp949')
     return df
 
 df = load_data()
