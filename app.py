@@ -22,7 +22,7 @@ df = load_data()
 
 # 데이터 미리보기
 st.subheader("데이터 미리보기")
-st.dataframe(df.head())
+st.dataframe(df)
 
 # 필터 설정
 st.sidebar.header("🔍 필터")
