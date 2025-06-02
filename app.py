@@ -2,46 +2,46 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import matplotlib
 
-matplotlib.rcParams['font.family'] = 'NanumGothic'  # 또는 'Malgun Gothic'
-
-# 데이터 불러오기
+# 📌 영어만 사용 – 폰트 문제 없음
 @st.cache_data
 def load_data():
-    df = pd.read_csv("사망재해_현황_및_분석성별_20250602121409.csv", encoding="cp949")
-    return df
+    return pd.read_csv("사망재해_현황_및_분석성별_20250602121409.csv", encoding="cp949")
 
 df = load_data()
 
-st.title("📈 산업별·성별 사망자 수 라인 그래프")
+st.title("📈 Deaths by Industry and Gender Over Years")
 
-# ✅ wide -> long 포맷으로 변환
+# Wide -> Long format
 df_long = df.melt(id_vars=['산업중분류별(1)', '성별(1)'], 
-                  var_name='연도', 
-                  value_name='사망자수')
+                  var_name='Year', 
+                  value_name='Deaths')
 
-# 연도는 문자열이므로 정수형으로 바꿔주자
-df_long['연도'] = df_long['연도'].astype(int)
+# Change column names to English for chart titles
+df_long.rename(columns={
+    '산업중분류별(1)': 'Industry',
+    '성별(1)': 'Gender'
+}, inplace=True)
 
-# 사용자 선택: 산업 분야와 성별 필터링
-industries = df_long['산업중분류별(1)'].unique()
-genders = df_long['성별(1)'].unique()
+df_long['Year'] = df_long['Year'].astype(int)
 
-selected_industry = st.selectbox("산업을 선택하세요", industries)
-selected_gender = st.selectbox("성별을 선택하세요", genders)
+# User selection
+industries = df_long['Industry'].unique()
+genders = df_long['Gender'].unique()
 
-# 필터링
+selected_industry = st.selectbox("Select an industry", industries)
+selected_gender = st.selectbox("Select a gender", genders)
+
 filtered = df_long[
-    (df_long['산업중분류별(1)'] == selected_industry) &
-    (df_long['성별(1)'] == selected_gender)
+    (df_long['Industry'] == selected_industry) &
+    (df_long['Gender'] == selected_gender)
 ]
 
-# 📈 라인 그래프
+# Plot
 fig, ax = plt.subplots()
-sns.lineplot(data=filtered, x='연도', y='사망자수', marker='o', ax=ax)
-ax.set_title(f"{selected_industry} - {selected_gender} 사망자 수 추이")
-ax.set_xlabel("연도")
-ax.set_ylabel("사망자 수")
+sns.lineplot(data=filtered, x='Year', y='Deaths', marker='o', ax=ax)
+ax.set_title(f"{selected_industry} - {selected_gender} Death Trend")
+ax.set_xlabel("Year")
+ax.set_ylabel("Number of Deaths")
 
 st.pyplot(fig)
