@@ -2,38 +2,46 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-# 한글 폰트 설정 (mac/linux 환경에 따라 다를 수 있음)
 import matplotlib
-matplotlib.rcParams['font.family'] = 'NanumGothic'  # or 'Malgun Gothic' (Windows)
 
-# CSV 불러오기 (인코딩 문제 해결)
+matplotlib.rcParams['font.family'] = 'NanumGothic'  # 또는 'Malgun Gothic'
+
+# 데이터 불러오기
 @st.cache_data
 def load_data():
-    return pd.read_csv("사망재해_현황_및_분석성별_20250602121409.csv", encoding='cp949')
+    df = pd.read_csv("사망재해_현황_및_분석성별_20250602121409.csv", encoding="cp949")
+    return df
 
-# 데이터 로딩
 df = load_data()
 
-st.title("📈 사망재해 연도별 추이 분석")
+st.title("📈 산업별·성별 사망자 수 라인 그래프")
 
-# 데이터 확인
-st.subheader("🔍 원본 데이터 미리보기")
-st.dataframe(df)
+# ✅ wide -> long 포맷으로 변환
+df_long = df.melt(id_vars=['산업중분류별(1)', '성별(1)'], 
+                  var_name='연도', 
+                  value_name='사망자수')
 
-# 라인 그래프 - 연도별 사망자 수
-if '연도' in df.columns and '사망자수' in df.columns:
-    st.subheader("🧩 연도별 사망자 수 변화")
+# 연도는 문자열이므로 정수형으로 바꿔주자
+df_long['연도'] = df_long['연도'].astype(int)
 
-    # 연도별 사망자 수 합계
-    df_grouped = df.groupby('연도')['사망자수'].sum().reset_index()
+# 사용자 선택: 산업 분야와 성별 필터링
+industries = df_long['산업중분류별(1)'].unique()
+genders = df_long['성별(1)'].unique()
 
-    # 그래프 그리기
-    fig, ax = plt.subplots()
-    sns.lineplot(data=df_grouped, x='연도', y='사망자수', marker='o', ax=ax)
-    ax.set_title("연도별 사망자 수 추이")
-    ax.set_xlabel("연도")
-    ax.set_ylabel("사망자 수")
-    st.pyplot(fig)
-else:
-    st.warning("⚠️ '연도' 또는 '사망자수' 컬럼이 존재하지 않습니다.")
+selected_industry = st.selectbox("산업을 선택하세요", industries)
+selected_gender = st.selectbox("성별을 선택하세요", genders)
+
+# 필터링
+filtered = df_long[
+    (df_long['산업중분류별(1)'] == selected_industry) &
+    (df_long['성별(1)'] == selected_gender)
+]
+
+# 📈 라인 그래프
+fig, ax = plt.subplots()
+sns.lineplot(data=filtered, x='연도', y='사망자수', marker='o', ax=ax)
+ax.set_title(f"{selected_industry} - {selected_gender} 사망자 수 추이")
+ax.set_xlabel("연도")
+ax.set_ylabel("사망자 수")
+
+st.pyplot(fig)
