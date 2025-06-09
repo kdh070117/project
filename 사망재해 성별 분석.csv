@@ -1,0 +1,22 @@
+industy,gender(1),2021,2022,2023
+total,all,2080,2223,2016
+total,male,1984,2113,1912
+total,female,96,110,104
+mining industry,all,349,453,427
+mining industry,male,340,452,421
+mining industry,female,9,1,6
+manufacturing industry,all,512,506,476
+manufacturing industry,male,490,475,449
+manufacturing industry,female,22,31,27
+utility industry,all,4,3,3
+utility industry,male,4,3,3
+utility industry,female,0,0,0
+construction industry,all,551,539,486
+construction industry,male,543,533,478
+construction industry,female,8,6,8
+transport and telecom industry,all,158,198,189
+transport and telecom industry,male,155,195,185
+transport and telecom industry,female,3,3,4
+etc.,all,506,524,435
+etc.,male,452,455,376
+etc.,female,54,69,59
