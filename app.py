@@ -5,7 +5,7 @@ import seaborn as sns
 
 @st.cache_data
 def load_data():
-    df = pd.read_csv("/mnt/data/사망재해 성별 분석.csv", encoding="cp949")
+    df = pd.read_csv("data/사망재해 성별 분석.csv", encoding="cp949")
     return df
 
 df = load_data()
