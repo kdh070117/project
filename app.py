@@ -49,6 +49,11 @@ ax.set_title(f"Death Trend: {selected_industry} - {selected_gender}")
 ax.set_xlabel("Year")
 ax.set_ylabel("Number of Deaths")
 
+# x축 눈금 위치와 레이블을 명확히 지정 (2021, 2022, 2023)
+ax.set_xticks(filtered_data['Year'])
+ax.set_xticklabels(filtered_data['Year'].astype(str))
+ax.tick_params(axis='x', labelsize=12)
+
 st.pyplot(fig)
 
 # Option to view data table
