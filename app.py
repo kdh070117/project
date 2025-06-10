@@ -46,8 +46,10 @@ sns.set(style="whitegrid")
 fig, ax = plt.subplots()
 sns.lineplot(data=filtered_data, x='Year', y='Deaths', marker='o', ax=ax)
 ax.set_title(f"Death Trend: {selected_industry} - {selected_gender}")
-ax.set_xlabel("Year")
-ax.set_ylabel("Number of Deaths")
+ax.set_xlabel("Year", fontsize=10)
+ax.set_ylabel("Number of Deaths", fontsize=10)
+ax.tick_params(axis='x', labelsize=8)
+ax.tick_params(axis='y', labelsize=8)
 
 st.pyplot(fig)
 
