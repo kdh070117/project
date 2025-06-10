@@ -44,11 +44,17 @@ filtered_data = df_long[
 st.subheader(f"📈 Deaths Over Time: {selected_industry} - {selected_gender}")
 sns.set(style="whitegrid")
 fig, ax = plt.subplots()
+
 sns.lineplot(data=filtered_data, x='Year', y='Deaths', marker='o', ax=ax)
 ax.set_title(f"Death Trend: {selected_industry} - {selected_gender}")
-ax.set_xlabel("Year", fontsize=10)
+ax.set_xlabel("Year.Month", fontsize=10)
 ax.set_ylabel("Number of Deaths", fontsize=10)
-ax.tick_params(axis='x', labelsize=8)
+
+# Set x-axis ticks and labels as "년도.01" 형식
+ax.set_xticks(filtered_data['Year'])
+ax.set_xticklabels([f"{year}.01" for year in filtered_data['Year']])
+
+ax.tick_params(axis='x', labelsize=10)
 ax.tick_params(axis='y', labelsize=8)
 
 st.pyplot(fig)
